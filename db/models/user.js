@@ -1,8 +1,11 @@
 'use strict';
 const {
-  Model
+  Model,
+  DataTypes
 } = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
+const bycrypt = require('bcrypt');
+
+module.exports = (sequelize) => {
   class user extends Model {
     /**
      * Helper method for defining associations.
@@ -17,6 +20,17 @@ module.exports = (sequelize, DataTypes) => {
     user_type: DataTypes.ENUM,
     username: DataTypes.STRING,
     password: DataTypes.STRING,
+    confirmPassword: {
+      type: DataTypes.VIRTUAL,
+      set(value) {
+         if (value === this.password) {
+          const hashPasspassword = bycrypt.hashSync(value, 10);
+          this.setDataValue('password', hashPasspassword);
+         } else {
+          throw new Error("Password and confirm password is not equal.")
+         }
+      }
+    },
     firstname: DataTypes.STRING,
     lastname: DataTypes.STRING
   }, {
