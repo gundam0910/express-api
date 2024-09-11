@@ -10,10 +10,11 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       user_type: {
-        type: Sequelize.ENUM('0','1','2')
+        type: Sequelize.ENUM('0','1','2'),
       },
-      username: {
-        type: Sequelize.STRING
+      email: {
+        type: Sequelize.STRING,
+        unique: true
       },
       password: {
         type: Sequelize.STRING
